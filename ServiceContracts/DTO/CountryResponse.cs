@@ -14,7 +14,7 @@ namespace ServiceContracts.DTO
         // It compares the current object to anther object of CountryResponse type and returns, if both values are same; otherwise returns false
         public override bool Equals(object? obj)
         {
-            if (obj == null)
+            if (obj is null)
             {
                 return false;
             }
