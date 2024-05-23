@@ -28,7 +28,7 @@ namespace ServiceContracts.DTO
         /// <returns></returns>
         public Person ToPerson()
         {
-            return new Person() { PersonName = this.PersonName, Email = this.Email, DateOfBirth = this.DateOfBirth, Gender = this.Gender.ToString(), Address = this.Address, ReceviceNewsLetters = this.ReceviceNewsLetters };
+            return new Person() { PersonName = this.PersonName, Email = this.Email, DateOfBirth = this.DateOfBirth, Gender = this.Gender.ToString(), Address = this.Address, ReceiveNewsLetters = this.ReceviceNewsLetters };
         }
     }
 }
