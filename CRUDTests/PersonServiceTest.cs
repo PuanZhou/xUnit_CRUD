@@ -12,12 +12,14 @@ namespace CRUDTests
     {
         //private fields
         private readonly IPersonsService _personsService;
+        private readonly ICountriesService _countriesService;
 
         //constructor
 
         public PersonServiceTest()
         {
             _personsService = new PersonService();
+            _countriesService = new CountriesService();
         }
 
         #region AddPerson
@@ -34,7 +36,6 @@ namespace CRUDTests
             {
                 _personsService.AddPerson(personAddRequest);
             });
-            #endregion
         }
 
         //假如我們提供PersonName為null值，應該丟出ArgumentException
@@ -67,5 +68,44 @@ namespace CRUDTests
 
             Assert.Contains(person_response_from_add, persons_list);
         }
+        #endregion
+
+        #region GetPersonByPersonID
+
+        //如果我們提供　PersonID 為 null，他應該回傳一個null PersonResponse
+        [Fact]
+        public void GetPersonByPersonID_NullPersonID()
+        {
+            //Arrange
+            Guid? personID = null;
+
+            //Act 
+            PersonResponse? person_response_from_get = _personsService.GetPersonByPersonID(personID);
+
+            //Asser
+            Assert.Null(person_response_from_get);
+        }
+
+        //如果我們提供了一個有效的Person id 他應該回傳給我們一個有效的person details as PersonResponse 物件
+        [Fact]
+        public void GetPersonByPersonID_WithPersonID()
+        {
+            //Arrange
+            CountryAddRequest country_request = new CountryAddRequest() { CountryName = "Cnada" };
+            CountryResponse country_response = _countriesService.AddCountry(country_request);
+
+            //Act
+            PersonAddRequest person_request = new PersonAddRequest() { PersonName = "Kane", Email = "email@sample.com", Address = "address", CountryID = country_response.CountryID, DateOfBirth = DateTime.Parse("2000-01-01"), Gender = GenderOptions.Male, ReceviceNewsLetters = false };
+
+            PersonResponse person_response_from_add = _personsService.AddPerson(person_request);
+
+            PersonResponse? person_response_from_get = _personsService.GetPersonByPersonID(person_response_from_add.PersonID);
+            
+            //Assert
+            Assert.Equal(person_response_from_add, person_response_from_get);
+
+        }
+
+        #endregion
     }
 }
