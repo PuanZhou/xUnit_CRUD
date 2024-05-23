@@ -62,7 +62,7 @@ namespace CRUDTests
             //Act
 
             PersonResponse person_response_from_add = _personsService.AddPerson(personAddRequest);
-            List<PersonResponse> persons_list = _personsService.GetAllPerson();
+            List<PersonResponse> persons_list = _personsService.GetAllPersons();
             //Assert
             Assert.True(person_response_from_add.PersonID != Guid.Empty);
 
@@ -100,12 +100,63 @@ namespace CRUDTests
             PersonResponse person_response_from_add = _personsService.AddPerson(person_request);
 
             PersonResponse? person_response_from_get = _personsService.GetPersonByPersonID(person_response_from_add.PersonID);
-            
+
             //Assert
             Assert.Equal(person_response_from_add, person_response_from_get);
 
         }
+        #endregion
 
+        #region GetAllPersons
+        //The GetAllPersons() 應該回傳一個empty list 在預設的狀況下
+        [Fact]
+        public void GetAllpersonsEmptyList()
+        {
+            //Act
+            List<PersonResponse> persons_from_get = _personsService.GetAllPersons();
+
+            //Assert
+            Assert.Empty(persons_from_get);
+        }
+
+        //一開始我們先加入少許person 當我們使用GetAllPersons()方法時，應該回傳所有我們添加過的person
+        [Fact]
+        public void GetAllpersons_AddFewPersons()
+        {
+            //Arrange
+            CountryAddRequest country_request1 = new CountryAddRequest() { CountryName = "USA" };
+            CountryAddRequest country_request2 = new CountryAddRequest() { CountryName = "Taiwan" };
+
+            CountryResponse country_response_1 = _countriesService.AddCountry(country_request1);
+            CountryResponse country_response_2 = _countriesService.AddCountry(country_request2);
+
+            PersonAddRequest person_request_1 = new PersonAddRequest() { PersonName = "Smith", Email = "smith@example.com", Gender = GenderOptions.Male, Address = "address of smith", CountryID = country_response_1.CountryID, DateOfBirth = DateTime.Parse("2002-05-06"), ReceviceNewsLetters = true };
+
+            PersonAddRequest person_request_2 = new PersonAddRequest() { PersonName = "Mary", Email = "mary@example.com", Gender = GenderOptions.Female, Address = "address of mary", CountryID = country_response_2.CountryID, DateOfBirth = DateTime.Parse("2003-02-02"), ReceviceNewsLetters = false };
+
+            PersonAddRequest person_request_3 = new PersonAddRequest() { PersonName = "Ron", Email = "ron@example.com", Gender = GenderOptions.Male, Address = "address of ron", CountryID = country_response_1.CountryID, DateOfBirth = DateTime.Parse("1993-03-02"), ReceviceNewsLetters = true };
+
+            List<PersonAddRequest> person_requests = new List<PersonAddRequest>()
+            {
+                person_request_1, person_request_2, person_request_3
+            };
+
+            List<PersonResponse> person_response_list_from_add = new List<PersonResponse>();
+            foreach (PersonAddRequest person_request in person_requests)
+            {
+                PersonResponse person_response = _personsService.AddPerson(person_request);
+                person_response_list_from_add.Add(person_response);
+            }
+
+            //Act
+            List<PersonResponse> persons_list_from_get = _personsService.GetAllPersons();
+
+            //Assert
+            foreach(PersonResponse person_response_from_add in person_response_list_from_add)
+            {
+                Assert.Contains(person_response_from_add, persons_list_from_get)
+            }
+        }
         #endregion
     }
 }

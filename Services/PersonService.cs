@@ -53,7 +53,7 @@ namespace Services
             return CovertPersonToPersonResponse(person);
         }
 
-        public List<PersonResponse> GetAllPerson()
+        public List<PersonResponse> GetAllPersons()
         {
             throw new NotImplementedException();
         }

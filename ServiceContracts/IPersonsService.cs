@@ -16,7 +16,7 @@ namespace ServiceContracts
         /// Returns all persons
         /// </summary>
         /// <returns>Returns a list of objects of PersonResponse type</returns>
-        List<PersonResponse> GetAllPerson();
+        List<PersonResponse> GetAllPersons();
         
         /// <summary>
         /// Returns the person object based on the given person id
