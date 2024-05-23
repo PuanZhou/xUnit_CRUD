@@ -39,7 +39,7 @@ namespace CRUDTests
 
         //假如我們提供PersonName為null值，應該丟出ArgumentException
         [Fact]
-        public void AddPerson_PersonNIsNull()
+        public void AddPerson_PersonNameIsNull()
         {
             //Arrange
             PersonAddRequest? personAddRequest = new PersonAddRequest() { PersonName = null };
