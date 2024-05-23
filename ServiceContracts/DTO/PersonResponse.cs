@@ -46,6 +46,12 @@ namespace ServiceContracts.DTO
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return $"PerrsonID: {PersonID} / Person Name :{PersonName} , Email:{Email}, Date Of Birth:{DateOfBirth?.ToString("yyyy-MM-dd")}, Gender:{Gender}, Country ID: {CountryID}, Country:{Country}, Address:{Address} , Recevie News Letters:{ReceviceNewsLetters}";
+
+        }
     }
 
     public static class PersonExtenSions

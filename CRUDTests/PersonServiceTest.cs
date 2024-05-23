@@ -4,6 +4,7 @@ using ServiceContracts.Enums;
 using Services;
 using System;
 using System.Collections.Generic;
+using Xunit.Abstractions;
 
 
 namespace CRUDTests
@@ -13,13 +14,15 @@ namespace CRUDTests
         //private fields
         private readonly IPersonsService _personsService;
         private readonly ICountriesService _countriesService;
+        private readonly ITestOutputHelper _testOutputHelper;
 
         //constructor
 
-        public PersonServiceTest()
+        public PersonServiceTest(ITestOutputHelper testOutputHelper)
         {
             _personsService = new PersonService();
             _countriesService = new CountriesService();
+            _testOutputHelper = testOutputHelper;
         }
 
         #region AddPerson
@@ -148,13 +151,28 @@ namespace CRUDTests
                 person_response_list_from_add.Add(person_response);
             }
 
+            //print person_response_list_from_add
+            _testOutputHelper.WriteLine("Expected:");
+            foreach (PersonResponse person_response_from_add in person_response_list_from_add)
+            {
+                _testOutputHelper.WriteLine(person_response_from_add.ToString());
+            }
+
             //Act
             List<PersonResponse> persons_list_from_get = _personsService.GetAllPersons();
 
-            //Assert
-            foreach(PersonResponse person_response_from_add in person_response_list_from_add)
+
+            //print persons_list_from_get
+            _testOutputHelper.WriteLine("Actual:");
+            foreach (PersonResponse person_response_from_get in persons_list_from_get)
             {
-                Assert.Contains(person_response_from_add, persons_list_from_get)
+                _testOutputHelper.WriteLine(person_response_from_get.ToString());
+            }
+
+            //Assert
+            foreach (PersonResponse person_response_from_add in person_response_list_from_add)
+            {
+                Assert.Contains(person_response_from_add, persons_list_from_get);
             }
         }
         #endregion
