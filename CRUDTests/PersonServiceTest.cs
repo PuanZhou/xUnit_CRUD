@@ -293,7 +293,64 @@ namespace CRUDTests
                 }
             }
         }
+        #endregion
 
+        #region GetSortedPersons
+        // 當我們排序利用PersonName 在DESC，他應該用降序返回 PersonName
+        [Fact]
+        public void GetSortedPersons()
+        {
+            //Arrange
+            CountryAddRequest country_request1 = new CountryAddRequest() { CountryName = "USA" };
+            CountryAddRequest country_request2 = new CountryAddRequest() { CountryName = "Taiwan" };
+
+            CountryResponse country_response_1 = _countriesService.AddCountry(country_request1);
+            CountryResponse country_response_2 = _countriesService.AddCountry(country_request2);
+
+            PersonAddRequest person_request_1 = new PersonAddRequest() { PersonName = "Smith", Email = "smith@example.com", Gender = GenderOptions.Male, Address = "address of smith", CountryID = country_response_1.CountryID, DateOfBirth = DateTime.Parse("2002-05-06"), ReceviceNewsLetters = true };
+
+            PersonAddRequest person_request_2 = new PersonAddRequest() { PersonName = "Mary", Email = "mary@example.com", Gender = GenderOptions.Female, Address = "address of mary", CountryID = country_response_2.CountryID, DateOfBirth = DateTime.Parse("2003-02-02"), ReceviceNewsLetters = false };
+
+            PersonAddRequest person_request_3 = new PersonAddRequest() { PersonName = "Rahman", Email = "Rahman@example.com", Gender = GenderOptions.Male, Address = "address of Rahman", CountryID = country_response_1.CountryID, DateOfBirth = DateTime.Parse("1993-03-02"), ReceviceNewsLetters = true };
+
+            List<PersonAddRequest> person_requests = new List<PersonAddRequest>()
+            {
+                person_request_1, person_request_2, person_request_3
+            };
+
+            List<PersonResponse> person_response_list_from_add = new List<PersonResponse>();
+            foreach (PersonAddRequest person_request in person_requests)
+            {
+                PersonResponse person_response = _personsService.AddPerson(person_request);
+                person_response_list_from_add.Add(person_response);
+            }
+
+            //print person_response_list_from_add
+            _testOutputHelper.WriteLine("Expected:");
+            foreach (PersonResponse person_response_from_add in person_response_list_from_add)
+            {
+                _testOutputHelper.WriteLine(person_response_from_add.ToString());
+            }
+
+            //Act
+            List<PersonResponse> allPersons = _personsService.GetAllPersons();
+            List<PersonResponse> persons_list_from_sort = _personsService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.DESC);
+
+            person_response_list_from_add = person_response_list_from_add.OrderByDescending(person => person.PersonName).ToList();
+
+            //print persons_list_from_get
+            _testOutputHelper.WriteLine("Actual:");
+            foreach (PersonResponse person_response_from_get in persons_list_from_sort)
+            {
+                _testOutputHelper.WriteLine(person_response_from_get.ToString());
+            }
+
+            //Assert
+            for(int i = 0; i < person_response_list_from_add.Count(); i++)
+            {
+                Assert.Equal(person_response_list_from_add[i], persons_list_from_sort[i]);
+            }
+        }
         #endregion
     }
 }
