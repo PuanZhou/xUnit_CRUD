@@ -394,7 +394,7 @@ namespace CRUDTests
 
             CountryResponse country_response_from_add = _countriesService.AddCountry(country_add_request);
 
-            PersonAddRequest person_add_request = new PersonAddRequest() { PersonName = "John", CountryID = country_response_from_add.CountryID };
+            PersonAddRequest person_add_request = new PersonAddRequest() { PersonName = "John", Email = "john@example.com", Address = "address...", Gender = GenderOptions.Male, CountryID = country_response_from_add.CountryID };
 
             PersonResponse person_response_from_add = _personsService.AddPerson(person_add_request);
 

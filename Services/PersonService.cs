@@ -10,7 +10,7 @@ namespace Services
 {
     public class PersonService : IPersonsService
     {
-        //privatte field
+        //private field
         private readonly List<Person> _persons;
         private readonly ICountriesService _countriesService;
 
@@ -76,16 +76,16 @@ namespace Services
             return person.ToPersonResponse();
         }
 
-        public List<PersonResponse> GetFilteredPersons(string seachBy, string? searchString)
+        public List<PersonResponse> GetFilteredPersons(string searchBy, string? searchString)
         {
             List<PersonResponse> allPersons = GetAllPersons();
             List<PersonResponse> matchingPersons = allPersons;
 
-            if (string.IsNullOrWhiteSpace(seachBy) || string.IsNullOrWhiteSpace(searchString))
+            if (string.IsNullOrWhiteSpace(searchBy) || string.IsNullOrWhiteSpace(searchString))
             {
                 return matchingPersons;
             }
-            switch (seachBy)
+            switch (searchBy)
             {
                 case nameof(Person.PersonName):
                     matchingPersons = allPersons.Where(person =>
@@ -192,7 +192,33 @@ namespace Services
 
         public PersonResponse UpdaterPerson(PersonUpdateRequest? personUpdateRequest)
         {
-            throw new NotImplementedException();
+            if (personUpdateRequest is null)
+            {
+                throw new ArgumentNullException(nameof(Person));
+            }
+
+            //驗證資料
+            ValidationHelper.ModelValidation(personUpdateRequest);
+
+            //get matching person object to update
+            Person? matchingPerson = _persons.FirstOrDefault(person => person.PersonID == personUpdateRequest.PersonID);
+            
+            if(matchingPerson is null)
+            {
+                throw new ArgumentException("Given Person id doesn't exit");
+            }
+
+            //update all details
+
+            matchingPerson.PersonName = personUpdateRequest.PersonName;
+            matchingPerson.Email = personUpdateRequest.Email;
+            matchingPerson.DateOfBirth = personUpdateRequest.DateOfBirth;
+            matchingPerson.Gender = personUpdateRequest.Gender.ToString();
+            matchingPerson.CountryID = personUpdateRequest.CountryID;
+            matchingPerson.Address = personUpdateRequest.Address;
+            matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
+
+            return matchingPerson.ToPersonResponse();
         }
     }
 }
