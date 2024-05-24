@@ -202,8 +202,8 @@ namespace Services
 
             //get matching person object to update
             Person? matchingPerson = _persons.FirstOrDefault(person => person.PersonID == personUpdateRequest.PersonID);
-            
-            if(matchingPerson is null)
+
+            if (matchingPerson is null)
             {
                 throw new ArgumentException("Given Person id doesn't exit");
             }
@@ -221,9 +221,23 @@ namespace Services
             return matchingPerson.ToPersonResponse();
         }
 
-        public bool DeletePerson(Guid? PersonID)
+        public bool DeletePerson(Guid? personID)
         {
-            throw new NotImplementedException();
+            if (personID is null)
+            {
+                throw new ArgumentNullException(nameof(personID));
+            }
+
+            Person? person = _persons.FirstOrDefault(person => person.PersonID == personID);
+
+            if (person is null)
+            {
+                return false;
+            }
+
+            _persons.RemoveAll(person => person.PersonID == personID);
+
+            return true;
         }
     }
 }
