@@ -346,10 +346,96 @@ namespace CRUDTests
             }
 
             //Assert
-            for(int i = 0; i < person_response_list_from_add.Count(); i++)
+            for (int i = 0; i < person_response_list_from_add.Count(); i++)
             {
                 Assert.Equal(person_response_list_from_add[i], persons_list_from_sort[i]);
             }
+        }
+        #endregion
+
+        #region UpdatePerson
+        //當我們提供 一個Null PersonUpdateRequest ，應該丟出 ArgumentNullException
+        [Fact]
+        public void UpdatePerson_NullPerson()
+        {
+            //Arrange
+            PersonUpdateRequest? personUpdateRequest = null;
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                //Act
+                _personsService.UpdaterPerson(personUpdateRequest);
+            });
+        }
+
+        //當我們提供 一個無效的PersonID ，應該丟出 ArgumentException
+        [Fact]
+        public void UpdatePerson_InvalidPersonID()
+        {
+            //Arrange
+            PersonUpdateRequest? personUpdateRequest = new PersonUpdateRequest()
+            { PersonID = Guid.NewGuid() };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _personsService.UpdaterPerson(personUpdateRequest);
+            });
+        }
+
+        //當我們提供PersonName為null，應該丟出 ArgumentException
+        [Fact]
+        public void UpdatePerson_PersonNameIsNull()
+        {
+            //Arrange
+            CountryAddRequest country_add_request = new CountryAddRequest() { CountryName = "UK" };
+
+            CountryResponse country_response_from_add = _countriesService.AddCountry(country_add_request);
+
+            PersonAddRequest person_add_request = new PersonAddRequest() { PersonName = "John", CountryID = country_response_from_add.CountryID };
+
+            PersonResponse person_response_from_add = _personsService.AddPerson(person_add_request);
+
+            PersonUpdateRequest person_update_request = person_response_from_add.ToPersonUpdateRequest();
+
+            person_update_request.PersonName = null;
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+
+                _personsService.UpdaterPerson(person_update_request);
+            });
+        }
+
+        //首先我們將添加一人，之後嘗試更新他的name 和 email
+        [Fact]
+        public void UpdatePerson_PersonFullDetailsUpdation()
+        {
+            //Arrange
+            CountryAddRequest country_add_request = new CountryAddRequest() { CountryName = "UK" };
+
+            CountryResponse country_response_from_add = _countriesService.AddCountry(country_add_request);
+
+            PersonAddRequest person_add_request = new PersonAddRequest() { PersonName = "John", CountryID = country_response_from_add.CountryID, Address = "example address", DateOfBirth = DateTime.Parse("2000-01-01"), Email = "john@example.com", Gender = GenderOptions.Male, ReceviceNewsLetters = true };
+
+            PersonResponse person_response_from_add = _personsService.AddPerson(person_add_request);
+
+            PersonUpdateRequest person_update_request = person_response_from_add.ToPersonUpdateRequest();
+
+            person_update_request.PersonName = "William";
+            person_add_request.Email = "william@example.com";
+
+            //Act 
+            PersonResponse person_response_from_update = _personsService.UpdaterPerson(person_update_request);
+
+            PersonResponse? person_response_from_get = _personsService.GetPersonByPersonID(person_response_from_update.PersonID);
+
+            //Assert
+            Assert.Equal(person_response_from_get, person_response_from_update);
         }
         #endregion
     }
