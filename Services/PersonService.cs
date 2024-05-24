@@ -15,10 +15,35 @@ namespace Services
         private readonly ICountriesService _countriesService;
 
 
-        public PersonService()
+        public PersonService(bool initialize = true)
         {
             _persons = new List<Person>();
             _countriesService = new CountriesService();
+            if (initialize)
+            {
+                _persons.AddRange(new List<Person>(){
+
+                new Person() { PersonID = Guid.Parse("57B2855F-6DEA-443C-81DD-CF46208BC489"), PersonName = "Richart", Email = "rprettyjohns0@mapy.cz", DateOfBirth = DateTime.Parse("1992-11-17"), Gender = "Male", Address = "92 Graceland Trail", ReceiveNewsLetters = true, CountryID = Guid.Parse("CBCEF3EE-7125-4113-B1E4-63045D53A159") },
+
+                new Person() { PersonID = Guid.Parse("68780E55-B8C7-4F9E-96ED-87675BBD3284"), PersonName = "Lovell", Email = "llapides1@pen.io", DateOfBirth = DateTime.Parse("1998-11-13"), Gender = "Male", Address = "118 Ohio Junction", ReceiveNewsLetters = true, CountryID = Guid.Parse("512671BD-7C05-4C75-96F8-E2279FE11896") },
+
+                new Person() { PersonID = Guid.Parse("F13AFAF1-5FB2-467C-87E7-E91DB58D83FB"), PersonName = "Drusilla", Email = "dlafaye2@comcast.net", DateOfBirth = DateTime.Parse("1996-12-18"), Gender = "Female", Address = "0 Upham Avenue", ReceiveNewsLetters = false, CountryID = Guid.Parse("B50D9ABE-9183-49FD-B5B7-2082AB990735") },
+
+                new Person() { PersonID = Guid.Parse("49CD89A0-B049-42F6-B6D2-17217E906390"), PersonName = "Verge", Email = "vlaible3@disqus.com", DateOfBirth = DateTime.Parse("1992-03-26"), Gender = "Male", Address = "72176 Logan Lane", ReceiveNewsLetters = false, CountryID = Guid.Parse("C802CF14-5842-4082-95BC-14A924A8389D") },
+
+                new Person() { PersonID = Guid.Parse("64660C3B-91E2-4706-BB50-1C4F37239948"), PersonName = "Eloisa", Email = "egaltone4@gizmodo.com", DateOfBirth = DateTime.Parse("1990-01-26"), Gender = "Female", Address = "09 Cody Alley", ReceiveNewsLetters = false, CountryID = Guid.Parse("8E311F26-1845-49C4-A359-E156EEE5BC6F") },
+
+                new Person() { PersonID = Guid.Parse("64B82A7D-0D71-4031-9B85-EF8838982AED"), PersonName = "Alastair", Email = "alanghorne5@phoca.cz", DateOfBirth = DateTime.Parse("1994-09-07"), Gender = "Male", Address = "54658 Arizona Court", ReceiveNewsLetters = true, CountryID = Guid.Parse("B50D9ABE-9183-49FD-B5B7-2082AB990735") },
+
+                new Person() { PersonID = Guid.Parse("F7A440D8-5B2B-4C3A-8AF6-308091EA9D6D"), PersonName = "Serge", Email = "stuberfield6@yellowbook.com", DateOfBirth = DateTime.Parse("1991-06-20"), Gender = "Male", Address = "509 Russell Pass", ReceiveNewsLetters = true, CountryID = Guid.Parse("CBCEF3EE-7125-4113-B1E4-63045D53A159") },
+
+                new Person() { PersonID = Guid.Parse("03530734-D7B1-4C20-8647-B5468CCC3542"), PersonName = "Jefferson", Email = "jlambkin7@behance.net", DateOfBirth = DateTime.Parse("1994-06-25"), Gender = "Male", Address = "465 Cambridge Plaza", ReceiveNewsLetters = false, CountryID = Guid.Parse("8E311F26-1845-49C4-A359-E156EEE5BC6F") },
+
+                new Person() { PersonID = Guid.Parse("61511681-A95E-475D-8019-60B881FFB276"), PersonName = "Shellysheldon", Email = "shanington8@google.cn", DateOfBirth = DateTime.Parse("2000-04-28"), Gender = "Male", Address = "51875 Thierer Alley", ReceiveNewsLetters = true, CountryID = Guid.Parse("C802CF14-5842-4082-95BC-14A924A8389D") },
+
+                new Person() { PersonID = Guid.Parse("67BC2CE2-A94C-4F02-B22B-59C20633488D"), PersonName = "Fredric", Email = "fnapoleon9@msu.edu", DateOfBirth = DateTime.Parse("1998-07-15"), Gender = "Male", Address = "53390 Golf Plaza", ReceiveNewsLetters = false, CountryID = Guid.Parse("512671BD-7C05-4C75-96F8-E2279FE11896") },
+                });
+            }
         }
         private PersonResponse CovertPersonToPersonResponse(Person person)
         {
