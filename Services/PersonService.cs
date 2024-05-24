@@ -112,38 +112,38 @@ namespace Services
             }
             switch (searchBy)
             {
-                case nameof(Person.PersonName):
+                case nameof(PersonResponse.PersonName):
                     matchingPersons = allPersons.Where(person =>
                     (!string.IsNullOrWhiteSpace(person.PersonName) ?
                     person.PersonName.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
                     break;
 
-                case nameof(Person.Email):
+                case nameof(PersonResponse.Email):
                     matchingPersons = allPersons.Where(person =>
                    (!string.IsNullOrWhiteSpace(person.Email) ?
                    person.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
                     break;
 
-                case nameof(Person.DateOfBirth):
+                case nameof(PersonResponse.DateOfBirth):
                     matchingPersons = allPersons.Where(person =>
                    (person.DateOfBirth != null) ?
                    person.DateOfBirth.Value.ToString("yyyy-MM-dd").Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
 
-                case nameof(Person.Gender):
+                case nameof(PersonResponse.Gender):
                     matchingPersons = allPersons.Where(person =>
                    (!string.IsNullOrWhiteSpace(person.Gender) ?
-                   person.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
+                   person.Gender.Equals(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
                     break;
 
-                case nameof(Person.CountryID):
+                case nameof(PersonResponse.CountryID):
                     matchingPersons = allPersons.Where(person =>
                    (!string.IsNullOrWhiteSpace(person.Country) ?
                    person.Country.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
                     break;
 
-                case nameof(Person.Address):
+                case nameof(PersonResponse.Address):
                     matchingPersons = allPersons.Where(person =>
                    (!string.IsNullOrWhiteSpace(person.Address) ?
                    person.Address.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
