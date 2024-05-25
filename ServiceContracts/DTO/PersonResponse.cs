@@ -19,7 +19,7 @@ namespace ServiceContracts.DTO
         public Guid? CountryID { get; set; }
         public string? Country { get; set; }
         public string? Address { get; set; }
-        public bool ReceviceNewsLetters { get; set; }
+        public bool ReceiveNewsLetters { get; set; }
         public double? Age { get; set; }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace ServiceContracts.DTO
             }
 
             PersonResponse person = (PersonResponse)obj;
-            return PersonID == person.PersonID && PersonName == person.PersonName && Email == person.Email && DateOfBirth == person.DateOfBirth && Gender == person.Gender && CountryID == person.CountryID && Address == person.Address && ReceviceNewsLetters == person.ReceviceNewsLetters;
+            return PersonID == person.PersonID && PersonName == person.PersonName && Email == person.Email && DateOfBirth == person.DateOfBirth && Gender == person.Gender && CountryID == person.CountryID && Address == person.Address && ReceiveNewsLetters == person.ReceiveNewsLetters;
         }
 
         public override int GetHashCode()
@@ -50,12 +50,12 @@ namespace ServiceContracts.DTO
 
         public override string ToString()
         {
-            return $"PerrsonID: {PersonID} / Person Name :{PersonName} , Email:{Email}, Date Of Birth:{DateOfBirth?.ToString("yyyy-MM-dd")}, Gender:{Gender}, Country ID: {CountryID}, Country:{Country}, Address:{Address} , Recevie News Letters:{ReceviceNewsLetters}";
+            return $"PerrsonID: {PersonID} / Person Name :{PersonName} , Email:{Email}, Date Of Birth:{DateOfBirth?.ToString("yyyy-MM-dd")}, Gender:{Gender}, Country ID: {CountryID}, Country:{Country}, Address:{Address} , Recevie News Letters:{ReceiveNewsLetters}";
 
         }
         public PersonUpdateRequest ToPersonUpdateRequest()
         {
-            return new PersonUpdateRequest() { PersonID = PersonID, PersonName = PersonName, Email = Email, DateOfBirth = DateOfBirth, Gender = (GenderOptions)Enum.Parse(typeof(GenderOptions), Gender, true), Address = Address, CountryID = CountryID, ReceiveNewsLetters = ReceviceNewsLetters };
+            return new PersonUpdateRequest() { PersonID = PersonID, PersonName = PersonName, Email = Email, DateOfBirth = DateOfBirth, Gender = (GenderOptions)Enum.Parse(typeof(GenderOptions), Gender, true), Address = Address, CountryID = CountryID, ReceiveNewsLetters = ReceiveNewsLetters };
         }
     }
 
@@ -74,7 +74,7 @@ namespace ServiceContracts.DTO
                 PersonName = person.PersonName,
                 Email = person.Email,
                 DateOfBirth = person.DateOfBirth,
-                ReceviceNewsLetters = person.ReceiveNewsLetters,
+                ReceiveNewsLetters = person.ReceiveNewsLetters,
                 Address = person.Address,
                 CountryID = person.CountryID,
                 Gender = person.Gender,

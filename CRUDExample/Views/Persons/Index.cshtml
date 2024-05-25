@@ -73,7 +73,7 @@
                 })
 
                 @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                { "ColumnName", nameof(PersonResponse.ReceviceNewsLetters) },
+                { "ColumnName", nameof(PersonResponse.ReceiveNewsLetters) },
                 { "DisplayName", "Receive News Letters"}
                 })
             </tr>
@@ -89,7 +89,7 @@
                     <td style="width:9%">@person.Gender</td>
                     <td style="width:10%">@person.Country</td>
                     <td style="width:10%">@person.Address</td>
-                    <td style="width:20%">@person.ReceviceNewsLetters</td>
+                    <td style="width:20%">@person.ReceiveNewsLetters</td>
                 </tr>
             }
 

@@ -204,11 +204,11 @@ namespace Services
                 (nameof(PersonResponse.Address), SortOrderOptions.DESC)
                 => allPersons.OrderByDescending(person => person.Address, StringComparer.OrdinalIgnoreCase).ToList(),
 
-                (nameof(PersonResponse.ReceviceNewsLetters), SortOrderOptions.ASC)
-                => allPersons.OrderBy(person => person.ReceviceNewsLetters).ToList(),
+                (nameof(PersonResponse.ReceiveNewsLetters), SortOrderOptions.ASC)
+                => allPersons.OrderBy(person => person.ReceiveNewsLetters).ToList(),
 
-                (nameof(PersonResponse.ReceviceNewsLetters), SortOrderOptions.DESC)
-                => allPersons.OrderByDescending(person => person.ReceviceNewsLetters).ToList(),
+                (nameof(PersonResponse.ReceiveNewsLetters), SortOrderOptions.DESC)
+                => allPersons.OrderByDescending(person => person.ReceiveNewsLetters).ToList(),
 
                 _ => allPersons
             };
