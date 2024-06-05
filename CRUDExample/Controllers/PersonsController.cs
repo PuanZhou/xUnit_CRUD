@@ -6,6 +6,7 @@ using ServiceContracts.Enums;
 
 namespace CRUDExample.Controllers
 {
+    //[Route("[controller]")]
     public class PersonsController : Controller
     {
         //private fields
@@ -18,7 +19,7 @@ namespace CRUDExample.Controllers
             _personsService = personsService;
             _countriesService = countriesService;
         }
-
+        //Route("[action]
         [Route("persons/index")]
         [Route("/")]
         public IActionResult Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrder = SortOrderOptions.ASC)
@@ -67,7 +68,9 @@ namespace CRUDExample.Controllers
             if (!ModelState.IsValid)
             {
                 List<CountryResponse> countries = _countriesService.GetAllCountries();
-                ViewBag.Countries = countries;
+                ViewBag.Countries = countries.Select(country =>
+                         new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() });
+
 
                 ViewBag.Errors = ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage).ToList();
                 return View();
@@ -76,6 +79,53 @@ namespace CRUDExample.Controllers
             PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
 
             return RedirectToAction("Index", "Persons");
+        }
+
+        [HttpGet]
+        [Route("persons/edit/{personID}")]
+        public IActionResult Edit(Guid personID)
+        {
+            PersonResponse? personResponse = _personsService.GetPersonByPersonID(personID);
+            if (personResponse is null)
+            {
+                return RedirectToAction("Index");
+            }
+            PersonUpdateRequest personUpdateRequest = personResponse.ToPersonUpdateRequest();
+
+            List<CountryResponse> countries = _countriesService.GetAllCountries();
+            ViewBag.Countries = countries.Select(country =>
+                     new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() }
+            );
+
+            return View(personUpdateRequest);
+        }
+
+        [HttpPost]
+        [Route("persons/edit/{personID}")]
+        public IActionResult Edit(PersonUpdateRequest personUpdateRequest)
+        {
+            PersonResponse? personResponse = _personsService.GetPersonByPersonID(personUpdateRequest.PersonID);
+
+            if (personResponse is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (ModelState.IsValid)
+            {
+                PersonResponse updatedPerson = _personsService.UpdaterPerson(personUpdateRequest);
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                List<CountryResponse> countries = _countriesService.GetAllCountries();
+                ViewBag.Countries = countries.Select(country =>
+                         new SelectListItem() { Text = country.CountryName, Value = country.CountryID.ToString() });
+
+                ViewBag.Errors = ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage).ToList();
+                return View();
+            }
         }
     }
 }
